@@ -1,26 +1,42 @@
 import React, { Component } from 'react';
-import { Form, Label, Input, Button } from 'reactstrap';
+import { Form, Label, Input, Button, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import '../App.css'
+import { apiPost } from './common/api';
 
 export default class Paste extends Component {
 
+    componentWillMount() {
+        this.setState({});
+    }
+
+    chooseLang = () => {
+        this.setState({...this.state, ...{dropdownOpen: !this.state.dropdownOpen}});
+    }
+
+    selectLang = (e, name) => {
+        const newState = this.state;  
+        newState.chosenLang = {text: e.target.innerText, name: name};
+        this.setState(newState);
+    }
+
     handleChange = (e) => {
-        this.setState({value: e.target.value});
+        this.setState({...this.state, ...{value: e.target.value}});
     }
 
     handleSubmit = (e) => {
         if (this.state) {
-            var valState = this.state.value;
+            const valState = this.state.value;
+            let headers;
+            if (this.state.chosenLang) {
+                headers = new Headers();
+                headers.append('X-Paste-Lang', this.state.chosenLang.name);
+            }
             if (valState) {
-                fetch('http://localhost:228/api/paste/',
-                    {
-                        method: 'POST',
-                        mode: 'cors',
-                        cache: 'no-cache',
-                        body: valState
-                })  .then(response => response.json())
-                    .then(function(myJson) {
-                        console.log(JSON.stringify(myJson));
+                apiPost('/paste/', valState, headers)
+                    .then(json => {
+                        if (json) {
+                            window.location.href = json.pasteId;
+                        }
                     });
             }
         }
@@ -40,7 +56,26 @@ export default class Paste extends Component {
                         onChange={this.handleChange}
                     />
                     <br/>
-                    <Button>Submit</Button>
+                    <div>
+                        <Button color="info">Submit</Button>
+                        &nbsp;
+                        <ButtonDropdown 
+                            isOpen={this.state.dropdownOpen} 
+                            toggle={this.chooseLang} 
+                            onSelect={this.selectLang}
+                        >
+                            <DropdownToggle caret>
+                                {(this.state.chosenLang && this.state.chosenLang.text) || "Select language"}
+                            </DropdownToggle>
+                            <DropdownMenu>
+                                <DropdownItem onClick={(e) => this.selectLang(e, "cpp")}>C++</DropdownItem>
+                                <DropdownItem onClick={(e) => this.selectLang(e, "java")}>Java</DropdownItem>
+                                <DropdownItem onClick={(e) => this.selectLang(e, "csharp")}>C#</DropdownItem>
+                                <DropdownItem onClick={(e) => this.selectLang(e, "js")}>JavaScript</DropdownItem>                                
+                                <DropdownItem onClick={(e) => this.selectLang(e, "shell")}>Bash</DropdownItem>
+                            </DropdownMenu>
+                        </ButtonDropdown>
+                    </div>
                 </Form>
             </div>
         )

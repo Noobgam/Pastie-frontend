@@ -6,6 +6,8 @@ import { BrowserRouter } from "react-router-dom";
 import { Route, Switch } from "react-router";
 import Paste from './components/Paste';
 import SpecificPaste from './components/SpecificPaste';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 class MainApp extends Component {
   render() {
@@ -16,6 +18,8 @@ class MainApp extends Component {
     );
   }
 }
+
+toast.configure();
 
 const App = () => (
   <BrowserRouter>
