@@ -11,11 +11,28 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem } from 'reactstrap';
+import LoginModal from '../LoginModal';
+import RegisterModal from '../RegisterModal';
 
 export default class Menu extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loginModal: false,
+      registerModal: false,
+    };
+  }
 
   componentWillMount() {
     this.setState({isOpen: false});
+  }
+
+  toggleLoginModal = () => {
+    this.setState({loginModal: true});
+  }
+
+  toggleRegisterModal = () => {
+    this.setState({registerModal: true});
   }
 
   render() {
@@ -28,15 +45,24 @@ export default class Menu extends Component {
               Menu
             </DropdownToggle>
             <DropdownMenu right>
-              <DropdownItem color="dark">
+              <DropdownItem color="dark" onClick={this.toggleLoginModal}>
                 Sign in
               </DropdownItem>
-              <DropdownItem>
-                Recent
+              <DropdownItem color="dark" onClick={this.toggleRegisterModal}>
+                Sign up
               </DropdownItem>
+              {
+                /*
+                <DropdownItem>
+                  Recent
+                </DropdownItem>
+                */
+              }
             </DropdownMenu>
           </UncontrolledDropdown>
         </Navbar>
+        <LoginModal modal={this.state.loginModal} />
+        <RegisterModal modal={this.state.registerModal} />
       </div>
     )
   }

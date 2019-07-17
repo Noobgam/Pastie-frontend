@@ -1,10 +1,12 @@
 
 import { toast } from 'react-toastify';
 
-const endpoint = 'http://localhost:228/api'
+const endpoint = 'http://paste.noobgam.me/api'
 
 export function apiGet(url) {
-    return wrapPromise(fetch(endpoint + url));
+    return wrapPromise(fetch(endpoint + url, {
+        credentials: 'include',
+    }));
 }
 
 export function apiPost(url, value, customHeaders) {
@@ -12,18 +14,18 @@ export function apiPost(url, value, customHeaders) {
         return wrapPromise(fetch(endpoint + url, {
             method: 'POST',
             mode: 'cors',
+            credentials: 'include',
             cache: 'no-cache',
             body: value,
-            headers: customHeaders,
-            credentials: 'same-origin'
+            headers: customHeaders
         }));
     } else {
         return wrapPromise(fetch(endpoint + url,
             {
                 method: 'POST',
                 mode: 'cors',
+                credentials: 'include',
                 cache: 'no-cache',
-                credentials: 'same-origin',
                 body: value
             }));
     }
@@ -33,6 +35,8 @@ function wrapPromise(promise) {
     return promise.then(
         res => res.json(),
         //undefined result is intended.
-        e => {toast.error('Something went wrong.')}
+        e => {
+            toast.error('Something went wrong.')
+        }
     )
 }
