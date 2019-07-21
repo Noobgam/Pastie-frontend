@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import './App.css';
 import Menu from './components/common/Menu';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -8,16 +8,6 @@ import Paste from './components/Paste';
 import SpecificPaste from './components/SpecificPaste';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-class MainApp extends Component {
-  render() {
-    return (
-      <React.Fragment>
-        <Menu/>                
-      </React.Fragment>
-    );
-  }
-}
 
 toast.configure();
 

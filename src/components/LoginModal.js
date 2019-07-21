@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, Label, Form, FormGroup } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } from 'reactstrap';
 import { apiPost } from './common/api';
 import { toast } from 'react-toastify';
 import md5 from 'md5';
@@ -45,10 +45,16 @@ class LoginModal extends Component {
         this.setState({...this.state, ...{pass: e.target.value}});
     }
 
+    toggle() {
+        this.setState(prevState => ({
+          modal: !prevState.modal
+        }));
+      }
+
     render() {
         return (
             <div>
-                <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} unmountOnClose={false}>
+                <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.toggle}>Sign in</ModalHeader>
                     <ModalBody>
                         <Input type="text" placeholder="Username" onChange={this.usernameChange}/>

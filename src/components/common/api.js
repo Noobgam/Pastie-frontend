@@ -1,10 +1,11 @@
 
 import { toast } from 'react-toastify';
 
-const endpoint = 'http://paste.noobgam.me/api'
+const endpoint = 'https://paste.noobgam.me/api'
 
 export function apiGet(url) {
     return wrapPromise(fetch(endpoint + url, {
+        mode: 'cors',
         credentials: 'include',
     }));
 }

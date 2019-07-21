@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Label, Input, Button } from 'reactstrap';
+import { Label } from 'reactstrap';
 import { apiGet } from './common/api';
 import Prism from 'prismjs';
 import '../index.css';
@@ -65,14 +65,14 @@ export default class SpecificPaste extends Component {
     render() {
         return (
             <div style={{padding:20}}>
-                {this.state.loaded && (!this.state.notFound && (
+                {this.state.loaded && ((!this.state.notFound && (
                     <div>
                         <Label for="paste-text"><b>Posted by:</b> <i>{this.state.owner}</i></Label>
                         <CodeBlock value={this.state.value} lang={this.state.lang}/>
                     </div>
                 )) || (this.state.notFound && (
                     <div> Not found =( </div>
-                ))}
+                )))}
             </div>
         )
     }

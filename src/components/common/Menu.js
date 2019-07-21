@@ -1,12 +1,8 @@
 import React, { Component } from 'react'
 import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
   Nav,
-  NavItem,
-  NavLink,
+  Navbar,
+  NavbarBrand,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
@@ -17,49 +13,71 @@ import RegisterModal from '../RegisterModal';
 export default class Menu extends Component {
   constructor(props) {
     super(props);
+
+    let cookies = document.cookie.split(';').map(function(c) {
+      return c.trim().split('=').map(decodeURIComponent);
+    }).reduce(function(a, b) {
+      try {
+        a[b[0]] = JSON.parse(b[1]);
+      } catch (e) {
+        a[b[0]] = b[1];
+      }
+      return a;
+    }, {});
+
     this.state = {
       loginModal: false,
       registerModal: false,
+      Username: cookies.Username
     };
   }
 
   componentWillMount() {
-    this.setState({isOpen: false});
+    this.setState({...this.state,...{isOpen: false}})
   }
 
   toggleLoginModal = () => {
-    this.setState({loginModal: true});
+    this.setState({...this.state,...{loginModal: true}});
   }
 
   toggleRegisterModal = () => {
-    this.setState({registerModal: true});
+    this.setState({...this.state,...{registerModal: true}});
   }
 
   render() {
     return (
       <div>
-        <Navbar color="dark" light expand="md">
-          <NavbarBrand href="/">Pastie</NavbarBrand>
-          <UncontrolledDropdown className="ml-auto" inNavbar> 
-            <DropdownToggle color="dark" lightnav="true" caret>
-              Menu
-            </DropdownToggle>
-            <DropdownMenu right>
-              <DropdownItem color="dark" onClick={this.toggleLoginModal}>
-                Sign in
-              </DropdownItem>
-              <DropdownItem color="dark" onClick={this.toggleRegisterModal}>
-                Sign up
-              </DropdownItem>
-              {
-                /*
-                <DropdownItem>
-                  Recent
+        <Navbar color="dark" dark expand="md">
+          <NavbarBrand href="/">
+            <img src='images/pastie.png'/>
+          </NavbarBrand>
+          <Nav className="ml-auto" navbar>
+            {(this.state.Username && (
+              <NavbarBrand>
+                Hello, {this.state.Username}!
+              </NavbarBrand>
+            ))}
+            <UncontrolledDropdown> 
+              <DropdownToggle color="dark" lightnav="true" caret>
+                Menu
+              </DropdownToggle>
+              <DropdownMenu right>
+                <DropdownItem color="dark" onClick={this.toggleLoginModal}>
+                  Sign in
                 </DropdownItem>
-                */
-              }
-            </DropdownMenu>
-          </UncontrolledDropdown>
+                <DropdownItem color="dark" onClick={this.toggleRegisterModal}>
+                  Sign up
+                </DropdownItem>
+                {
+                  /*
+                  <DropdownItem>
+                    Recent
+                  </DropdownItem>
+                  */
+                }
+              </DropdownMenu>
+            </UncontrolledDropdown>
+          </Nav>
         </Navbar>
         <LoginModal modal={this.state.loginModal} />
         <RegisterModal modal={this.state.registerModal} />
