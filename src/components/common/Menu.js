@@ -37,11 +37,15 @@ export default class Menu extends Component {
   }
 
   toggleLoginModal = () => {
-    this.setState({...this.state,...{loginModal: true}});
+    this.setState(prevState => ({
+      loginModal: !prevState.loginModal
+    }));
   }
 
   toggleRegisterModal = () => {
-    this.setState({...this.state,...{registerModal: true}});
+    this.setState(prevState => ({
+      registerModal: !prevState.registerModal
+    }));
   }
 
   render() {
@@ -79,8 +83,8 @@ export default class Menu extends Component {
             </UncontrolledDropdown>
           </Nav>
         </Navbar>
-        <LoginModal modal={this.state.loginModal} />
-        <RegisterModal modal={this.state.registerModal} />
+        <LoginModal modal={this.state.loginModal} toggle={this.toggleLoginModal} />
+        <RegisterModal modal={this.state.registerModal} toggle={this.toggleRegisterModal} />
       </div>
     )
   }

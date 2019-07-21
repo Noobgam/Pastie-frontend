@@ -24,6 +24,9 @@ class LoginModal extends Component {
             modal: props.modal || false
         };
         this.state = newState;
+        this.toggle = () => {
+            props.toggle();
+        }
     }
 
     componentWillReceiveProps(x) {
@@ -32,8 +35,10 @@ class LoginModal extends Component {
 
 
     submit = (e) => {
-        apiPost('/login/?handle=' + this.state.handle, 'PM:' + md5(this.state.pass))
-            .then(loginHandler);
+        if (this.state.handle && this.state.pass) {
+            apiPost('/login/?handle=' + this.state.handle, 'PM:' + md5(this.state.pass))
+                .then(loginHandler);
+        }
         e.preventDefault();     
     }
 
@@ -44,12 +49,6 @@ class LoginModal extends Component {
     passwordChange = (e) => {
         this.setState({...this.state, ...{pass: e.target.value}});
     }
-
-    toggle() {
-        this.setState(prevState => ({
-          modal: !prevState.modal
-        }));
-      }
 
     render() {
         return (

@@ -11,6 +11,9 @@ class RegisterModal extends Component {
             modal: props.modal || false
         };
         this.state = newState;
+        this.toggle = () => {
+            props.toggle();
+        }
     }
 
     componentWillReceiveProps(x) {
@@ -19,22 +22,24 @@ class RegisterModal extends Component {
 
 
     submit = (e) => {
-        apiPost('/register/?handle=' + this.state.handle, 'PM:' + md5(this.state.pass))
-            .then(res => {
-                if (res) {
-                    if (res.status === 400) {   
-                        toast.warn(res.error);    
-                    } else if (res.status === 200) {
-                        this.setState({
-                            ...this.state,
-                            ...{modal: false}
-                        });
-                        toast.success('Logged in as');              
-                    } else {
-                        toast.error('Something went wrong');  
+        if (this.state.handle && this.state.pass)  {
+            apiPost('/register/?handle=' + this.state.handle, 'PM:' + md5(this.state.pass))
+                .then(res => {
+                    if (res) {
+                        if (res.status === 400) {   
+                            toast.warn(res.error);    
+                        } else if (res.status === 200) {
+                            this.setState({
+                                ...this.state,
+                                ...{modal: false}
+                            });
+                            toast.success('Logged in as ' + this.state.handle);              
+                        } else {
+                            toast.error('Something went wrong');  
+                        }
                     }
-                }
-            });
+                });
+        }
         e.preventDefault();     
     }
 
