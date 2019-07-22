@@ -4,13 +4,13 @@ import { apiPost } from './common/api';
 import { toast } from 'react-toastify';
 import md5 from 'md5';
 
-function loginHandler(res) {
+function loginHandler(modal, res) {
     if (res) {
         if (res.status === 400) {   
             toast.warn(res.error);    
         } else if (res.status === 200) {
-            this.modal = false;
-            toast.success('Logged in');              
+            toast.success('Logged in');
+            modal.toggle();             
         } else {
             toast.error('Something went wrong');  
         }
@@ -37,7 +37,7 @@ class LoginModal extends Component {
     submit = (e) => {
         if (this.state.handle && this.state.pass) {
             apiPost('/login/?handle=' + this.state.handle, 'PM:' + md5(this.state.pass))
-                .then(loginHandler);
+                .then(res => loginHandler(this, res));
         }
         e.preventDefault();     
     }
