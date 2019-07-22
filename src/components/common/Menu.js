@@ -66,10 +66,8 @@ export default class Menu extends Component {
   }
 
   logout = () => {
-    if (this.state.handle && this.state.pass) {
-      apiPost('/logout/')
-        .then(res => logoutHandler(this, res));
-    }
+    apiPost('/logout/')
+      .then(res => logoutHandler(this, res));
   }
 
   render() {
