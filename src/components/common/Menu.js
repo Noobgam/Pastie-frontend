@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import {
   Nav,
+  NavItem,
+  NavLink,
   Navbar,
   NavbarBrand,
   UncontrolledDropdown,
@@ -17,7 +19,7 @@ function logoutHandler(modal, res) {
       if (res.status === 400) {   
           toast.warn(res.error);    
       } else if (res.status === 200) {
-          toast.success('Logged in');
+          toast.info('Bye-bye 😢');
           modal.setState(prevState => ({
             Username: undefined
           }));
@@ -53,15 +55,17 @@ export default class Menu extends Component {
     this.setState({...this.state,...{isOpen: false}})
   }
 
-  toggleLoginModal = () => {
+  toggleLoginModal = (name) => {
     this.setState(prevState => ({
-      loginModal: !prevState.loginModal
+      loginModal: !prevState.loginModal,
+      Username: name
     }));
   }
 
-  toggleRegisterModal = () => {
+  toggleRegisterModal = (name) => {
     this.setState(prevState => ({
-      registerModal: !prevState.registerModal
+      registerModal: !prevState.registerModal,
+      Username: name
     }));
   }
 
@@ -79,10 +83,13 @@ export default class Menu extends Component {
           </NavbarBrand>
           <Nav className="ml-auto" navbar>
             {(this.state.Username && (
-              <NavbarBrand>
+              <NavbarBrand style={{color: 'white', textDecoration: 'none'}} href={"/recent?user=" + this.state.Username}>
                 Hello, {this.state.Username}!
               </NavbarBrand>
-            ))}
+            ))}            
+            <NavItem>
+                <NavLink href="/recent">Recent</NavLink>
+              </NavItem>
             <UncontrolledDropdown> 
               <DropdownToggle color="dark" lightnav="true" caret>
                 Menu

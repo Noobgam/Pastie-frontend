@@ -19,7 +19,8 @@ const App = () => (
       <Route path="/" component={Menu} />
       <Switch>
         <Route exact path="/" component={Paste} />
-        <Route path="/" component={SpecificPaste} />
+        <Route exact path="/:id/raw" component={SpecificPaste} />
+        <Route exact path="/:id" component={SpecificPaste} />
       </Switch>
     </div>
   </BrowserRouter>
