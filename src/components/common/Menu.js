@@ -79,7 +79,7 @@ export default class Menu extends Component {
       <div>
         <Navbar color="dark" dark expand="md">
           <NavbarBrand href="/">
-            <img src='images/pastie.png'/>
+            <img src='/images/pastie.png' alt=""/>
           </NavbarBrand>
           <Nav className="ml-auto" navbar>
             {(this.state.Username && (

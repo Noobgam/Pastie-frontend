@@ -8,6 +8,7 @@ import Paste from './components/Paste';
 import SpecificPaste from './components/SpecificPaste';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import RecentPastes from './components/RecentPastes';
 
 toast.configure();
 
@@ -19,6 +20,7 @@ const App = () => (
       <Route path="/" component={Menu} />
       <Switch>
         <Route exact path="/" component={Paste} />
+        <Route exact path="/recent" component={RecentPastes} />
         <Route exact path="/:id/raw" component={SpecificPaste} />
         <Route exact path="/:id" component={SpecificPaste} />
       </Switch>
