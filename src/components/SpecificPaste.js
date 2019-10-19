@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import { Label } from 'reactstrap';
 import { apiGet } from './common/api';
+import { CodeBlock } from './common/common'
+import { Button } from 'reactstrap';
+
 import Prism from 'prismjs';
 import '../index.css';
 import '../prism.css';
@@ -22,22 +25,6 @@ function get(url) {
     return apiGet(url);
 }
 
-function CodeBlock(props) {
-    const lang = props.lang;
-    if (lang) {
-      return (
-          <pre><code className={"line-numbers language-" + lang}>
-              {props.value}
-          </code></pre>
-      );
-    }
-    return (
-        <pre><code className={"line-numbers"}>
-            {props.value}
-        </code></pre>
-    );
-  }
-
 export default class SpecificPaste extends Component {
 
     componentWillMount() {
@@ -53,7 +40,14 @@ export default class SpecificPaste extends Component {
                         })
                     } else {
                         this.setState({
-                            loaded:true, value:r.content, owner:r.owner, lang:r.lang
+                            loaded:true, 
+                            value:r.content, 
+                            owner:r.owner, 
+                            lang:r.lang, 
+                            instant: r.instant,
+
+                            // feed from url
+                            id:id,
                         })
                         Prism.highlightAll();
                     }
@@ -67,7 +61,21 @@ export default class SpecificPaste extends Component {
             <div style={{padding:20}}>
                 {this.state.loaded && ((!this.state.notFound && (
                     <div>
-                        <Label for="paste-text"><b>Posted by:</b> <i>{this.state.owner}</i></Label>
+                        <Label for="paste-text"><b>Posted by:</b> <i>{this.state.owner}</i>
+                            &nbsp;
+                            <Button 
+                                color="secondary" 
+                                href={this.state.id + "/raw"}
+                                size="sm"
+                            >
+                                raw
+                            </Button>
+                            <br/>
+                            &nbsp;
+                            {(this.state.instant && <div>
+                                {new Date(this.state.instant).toLocaleString()}
+                            </div>)}
+                        </Label>
                         <CodeBlock value={this.state.value} lang={this.state.lang}/>
                     </div>
                 )) || (this.state.notFound && (

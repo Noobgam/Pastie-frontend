@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import { Route, Switch } from "react-router";
 import Paste from './components/Paste';
 import SpecificPaste from './components/SpecificPaste';
+import Pumpkin from './components/Pumpkin'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import RecentPastes from './components/RecentPastes';
@@ -21,7 +22,7 @@ const App = () => (
       <Switch>
         <Route exact path="/" component={Paste} />
         <Route exact path="/recent" component={RecentPastes} />
-        <Route exact path="/:id/raw" component={SpecificPaste} />
+        <Route exact path="/:id/raw" component={Pumpkin} />
         <Route exact path="/:id" component={SpecificPaste} />
       </Switch>
     </div>

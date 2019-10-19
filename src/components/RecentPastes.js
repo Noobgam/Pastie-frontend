@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { Label } from 'reactstrap';
 import { apiGet } from './common/api';
+import { CodeBlock } from './common/common'
 import Prism from 'prismjs';
+import { Button } from 'reactstrap';
 import '../index.css';
 import '../prism.css';
 
@@ -22,21 +24,19 @@ function get(url) {
     return apiGet(url);
 }
 
-function CodeBlock(props) {
-    const lang = props.lang;
-    if (lang) {
-      return (
-          <pre><code className={"line-numbers language-" + lang}>
-              {props.value}
-          </code></pre>
-      );
-    }
-    return (
-        <pre><code className={"line-numbers"}>
-            {props.value}
-        </code></pre>
+function renderPastes(pastes) {
+    return pastes.map((paste) =>
+        <div key={paste.id}>
+            <Label for="paste-text"><b>Posted by:</b> <i>{paste.owner}</i>
+                &nbsp;
+                <Button color="info" href={"/" + paste.id}>full</Button> 
+                &nbsp;
+                <Button color="secondary" href={"/" + paste.id + "/raw"}>raw</Button>
+            </Label>
+            <CodeBlock value={paste.snippet} lang={paste.lang}/>
+        </div>
     );
-  }
+}
 
 export default class RecentPastes extends Component {
 
@@ -44,7 +44,7 @@ export default class RecentPastes extends Component {
         this.setState({loaded:false})
         var href = new URL(window.location.href);        
         var user = href.searchParams.get("user");
-        var url = '/recent';
+        var url = '/recent/';
         if (user !== null) {
             url += '?handle=' + user;
         }
@@ -57,7 +57,7 @@ export default class RecentPastes extends Component {
                         })
                     } else {
                         this.setState({
-                            loaded:true, value:r.content, owner:r.owner, lang:r.lang
+                            loaded:true, pastes:r.pastes
                         })
                         Prism.highlightAll();
                     }
@@ -71,8 +71,7 @@ export default class RecentPastes extends Component {
             <div style={{padding:20}}>
                 {this.state.loaded && ((!this.state.notFound && (
                     <div>
-                        <Label for="paste-text"><b>Posted by:</b> <i>{this.state.owner}</i></Label>
-                        <CodeBlock value={this.state.value} lang={this.state.lang}/>
+                        {renderPastes(this.state.pastes)}
                     </div>
                 )) || (this.state.notFound && (
                     <div> Not found =( </div>
