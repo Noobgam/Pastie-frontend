@@ -96,12 +96,12 @@ export default class Menu extends Component {
               </DropdownToggle>
               <DropdownMenu right>
                 {(!(this.state.Username) && (
-                  <DropdownItem color="dark" onClick={this.toggleLoginModal}>
+                  <DropdownItem color="dark" onClick={() => this.toggleLoginModal(undefined)}>
                     Sign in
                   </DropdownItem>
                 ))}
                 {(!(this.state.Username) && (
-                  <DropdownItem color="dark" onClick={this.toggleRegisterModal}>
+                  <DropdownItem color="dark" onClick={() => this.toggleRegisterModal(undefined)}>
                     Sign up
                   </DropdownItem>
                 ))}
